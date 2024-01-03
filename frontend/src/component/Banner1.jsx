@@ -5,7 +5,7 @@ function Banner1() {
     <div>
       <section className="banner-cont">
         <div>
-          <img src={laptop} alt="bannerImage" />
+          
         </div>
       </section>
     </div>

@@ -5,6 +5,11 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Shipping from "./pages/shipping";
 import Cart from "./pages/cart";
+import ProductScreen from "./pages/[Slug]";
+import Admin from "./pages/admin/Admin";
+import { RequireAuth } from "../utils/RequireAuth";
+import Nav from "./component/Nav";
+import Additem from "./pages/admin/Additem";
 
 function App() {
   const Router = createBrowserRouter([
@@ -26,13 +31,38 @@ function App() {
     },
     {
       path: "/shipping",
-      element: <Shipping></Shipping>,
+      element: (
+        <RequireAuth>
+          <Shipping></Shipping>
+        </RequireAuth>
+      ),
     },
     {
       path: "/cart",
       element: <Cart></Cart>,
     },
+    {
+      path: "/:slug",
+      element: <ProductScreen></ProductScreen>,
+    },
+    {
+      path: "/admin",
+      element: (
+        <RequireAuth>
+          <Admin></Admin>
+        </RequireAuth>
+      ),
+    },
+    {
+      path: "/sell",
+      element: (
+        <RequireAuth>
+          <Additem></Additem>
+        </RequireAuth>
+      ),
+    },
   ]);
+
   return (
     <main>
       <RouterProvider router={Router}></RouterProvider>

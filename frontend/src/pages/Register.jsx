@@ -3,10 +3,12 @@ import { CiLock, CiMail, CiUser } from "react-icons/ci";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { BiX } from "react-icons/bi";
-import {BrowserRouter, useNavigate} from 'react-router-dom'
+import { BrowserRouter, useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
+import { useAuth } from "../../utils/Auth";
+import { jwtDecode } from "jwt-decode";
 
 function Register() {
-
   const navigate = useNavigate();
   const {
     register,
@@ -14,10 +16,17 @@ function Register() {
     formState: { errors },
   } = useForm();
 
+  const authentication = useAuth();
+
   const apiregistration = (data) => {
     if (data.password === data.confirmedpassword) {
       document.getElementById("cmfpws").style.border = "none";
-      console.log(data);
+      document.getElementById("erro").innerHTML = "";
+
+      axios.post("http://localhost:8080/api/register", data).then((respose) => {
+        authentication.login(respose.data);
+        navigate("/");
+      });
     } else {
       document.getElementById("cmfpws").style.border = "2px solid red";
       document.getElementById("erro").innerHTML = "password does not match. ";
@@ -28,9 +37,9 @@ function Register() {
   return (
     <div className="container">
       <div className="login-form-container">
-      <div className="close" onClick={()=>navigate('/') }>
-        <BiX size={30} />
-      </div>
+        <div className="close" onClick={() => navigate("/")}>
+          <BiX size={30} />
+        </div>
         <div className="nuelmat">
           <h1>
             <b>NUELMAT</b>
@@ -38,6 +47,21 @@ function Register() {
           <span>register</span>
         </div>
         <form onSubmit={handleSubmit((data) => apiregistration(data))}>
+          <div>
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                const decode = jwtDecode(credentialResponse.credential);
+                const cddata = {
+                  username: decode.name,
+                  email: decode.email,
+                };
+                console.log(decode);
+              }}
+              onError={() => {
+                console.log("login failed ");
+              }}
+            />
+          </div>
           <div className="username">
             <CiUser size={20} className="icons" />
             <input

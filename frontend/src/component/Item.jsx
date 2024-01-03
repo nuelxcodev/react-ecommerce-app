@@ -2,17 +2,25 @@
 
 import { useContext } from "react";
 import { Store } from "../../utils/Store";
+import { useNavigate } from "react-router-dom";
 
 function Item({ product }) {
   const { state, dispatch } = useContext(Store);
   const { cart } = state;
+  const navigate = useNavigate();
 
   return (
     <div>
       <div className="item-container">
         <div>
           <div className="item-image">
-            <img src={product.image} alt={product.name} />
+            <img
+              src={product.image}
+              alt={product.name}
+              onClick={() => {
+                navigate(`/${product.slug}`);
+              }}
+            />
           </div>
           <section className="item-cont">
             <div className="item-info">
@@ -40,7 +48,6 @@ function Item({ product }) {
                   type: "ADD_ITEM",
                   payload: { ...product, quantity },
                 });
-                console.log(cart);
               }}
             >
               buy now
