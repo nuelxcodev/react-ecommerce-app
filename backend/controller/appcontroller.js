@@ -49,7 +49,7 @@ export async function items(req, res) {
     return res.json({ status: "success", message: "created" })
 }
 export async function getitems(req, res) {
-    const allItem = await Item.find()
+    // const allItem = await Item.find()
     
     res.json(data)
 }

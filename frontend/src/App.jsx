@@ -64,7 +64,7 @@ function App() {
   ]);
 
   return (
-    <main>
+    <main className=" flex justify-center flex-col items-center ">
       <RouterProvider router={Router}></RouterProvider>
     </main>
   );

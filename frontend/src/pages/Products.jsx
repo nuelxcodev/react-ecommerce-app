@@ -1,4 +1,4 @@
-import Item from "../component/Item";
+import Item from "../component/Card";
 import { CiSearch } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 import Part from "../component/part/Partcart";
