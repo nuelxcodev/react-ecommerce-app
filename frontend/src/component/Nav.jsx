@@ -17,7 +17,6 @@ function Nav() {
 
   const handleLogout = () => {
     Auth.logout();
-    navigate("/login");
   };
 
   return (
@@ -28,9 +27,10 @@ function Nav() {
           <div>
             <a
               className="text-gray-800 text-xl font-bold md:text-2xl hover:text-gray-700"
-              href="#"
+              href="/"
+              style={{ fontFamily: "cursive" }}
             >
-              Brand
+              Nuelmart
             </a>
           </div>
 
@@ -49,9 +49,7 @@ function Nav() {
 
         {/* Navigation Links */}
         <div
-          className={`${
-            menuOpen ? "block" : "hidden"
-          } md:flex items-center`} // Conditionally show/hide menu
+          className={`${menuOpen ? "block" : "hidden"} md:flex items-center`} // Conditionally show/hide menu
         >
           <div className="flex flex-col md:flex-row md:mx-6">
             <a
@@ -62,7 +60,7 @@ function Nav() {
             </a>
             <a
               className="my-1 text-sm text-gray-700 font-medium hover:text-indigo-500 md:mx-4 md:my-0"
-              href="/shop"
+              href="/products"
             >
               Shop
             </a>
@@ -74,7 +72,7 @@ function Nav() {
             </a>
             <a
               className="my-1 text-sm text-gray-700 font-medium hover:text-indigo-500 md:mx-4 md:my-0"
-              href="/about"
+              href="#about"
             >
               About
             </a>
@@ -86,10 +84,10 @@ function Nav() {
               className="relative text-gray-700 hover:text-gray-600"
               href="/cart"
             >
-              <BiCart className="h-5 w-5 -z-10" />
+              <BiCart size={30} className="-z-10" />
               {cart.length > 0 && (
                 <span className="absolute top-0 left-0 z-10 rounded-full bg-indigo-500 text-white px-1 text-xs">
-                  {cart.length}
+                  {cart.reduce((a, b) => a + b.quantity, 0)}
                 </span>
               )}
             </a>

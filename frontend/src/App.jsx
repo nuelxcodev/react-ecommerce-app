@@ -1,15 +1,12 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
-import Products from "./pages/products";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
+import Products from "./pages/Products";
+import Login from "./pages/Register";
 import Shipping from "./pages/shipping";
 import Cart from "./pages/cart";
-import ProductScreen from "./pages/[Slug]";
-import Admin from "./pages/admin/Admin";
-import { RequireAuth } from "../utils/RequireAuth";
-import Nav from "./component/Nav";
-import Additem from "./pages/admin/Additem";
+import ProductScreen from "./pages/product/[_id]";
+import RequireAuth from "../utils/RequireAuth";
+
 
 function App() {
   const Router = createBrowserRouter([
@@ -26,10 +23,6 @@ function App() {
       element: <Login></Login>,
     },
     {
-      path: "/register",
-      element: <Register></Register>,
-    },
-    {
       path: "/shipping",
       element: (
         <RequireAuth>
@@ -38,29 +31,14 @@ function App() {
       ),
     },
     {
-      path: "/cart",
+      path: "/cart" ,
       element: <Cart></Cart>,
     },
     {
-      path: "/:slug",
+      path: "/product/:id",
       element: <ProductScreen></ProductScreen>,
     },
-    {
-      path: "/admin",
-      element: (
-        <RequireAuth>
-          <Admin></Admin>
-        </RequireAuth>
-      ),
-    },
-    {
-      path: "/sell",
-      element: (
-        <RequireAuth>
-          <Additem></Additem>
-        </RequireAuth>
-      ),
-    },
+   
   ]);
 
   return (

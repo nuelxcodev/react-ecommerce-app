@@ -1,133 +1,151 @@
-/* eslint-disable no-unused-vars */
 import { useContext, useState } from "react";
 import { Store } from "../../utils/Store";
-import { GiChart, GiShoppingBag } from "react-icons/gi";
-import { BsBank, BsPaypal, BsStripe } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import LocationForm from "../component/part/locationForm";
+import Nav from "../component/Nav";
+
 
 function Shipping() {
   const navigate = useNavigate();
   const { state, dispatch } = useContext(Store);
   const { cart, location } = state;
 
-  // const startshopping = navigate('p')
-  const [shippingLocation, setshipLocation] = useState({});
+  const [shippingLocation, setShipLocation] = useState({});
   const shippingFEE = 20;
-  let total = cart.reduce((a, c) => a + c.quantity * c.price, +shippingFEE, 0);
+  let total = cart.reduce((a, c) => a + c.quantity * c.price, shippingFEE);
 
   return (
-    <div className="container">
-      {location.length === 0 ? (
-        <div className="location-form-cont">
-          <LocationForm state={state} dispatch={dispatch} />
+    <div className="container my-20 mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+     <Nav/>
+      {/* Shipping Form */}
+      <div className="col-span-2 bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-lg font-semibold mb-4">Shipping Details</h2>
+
+        <form className="space-y-4">
+          {/* Country Selection */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Select Shipping Country
+            </label>
+            <select className="w-full border border-gray-300 rounded-lg p-2">
+              <option>United States</option>
+              <option>Canada</option>
+              <option>United Kingdom</option>
+            </select>
+          </div>
+
+          {/* Shipping Address */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                First Name
+              </label>
+              <input
+                type="text"
+                className="w-full border border-gray-300 rounded-lg p-2"
+                placeholder="Enter your first name"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Last Name
+              </label>
+              <input
+                type="text"
+                className="w-full border border-gray-300 rounded-lg p-2"
+                placeholder="Enter your last name"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Address
+            </label>
+            <input
+              type="text"
+              className="w-full border border-gray-300 rounded-lg p-2"
+              placeholder="Enter your address"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                City
+              </label>
+              <input
+                type="text"
+                className="w-full border border-gray-300 rounded-lg p-2"
+                placeholder="Enter your city"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                State
+              </label>
+              <input
+                type="text"
+                className="w-full border border-gray-300 rounded-lg p-2"
+                placeholder="Enter your state"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Zip Code
+              </label>
+              <input
+                type="text"
+                className="w-full border border-gray-300 rounded-lg p-2"
+                placeholder="Enter your zip code"
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+
+      {/* Order Summary */}
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-lg font-semibold mb-4">Your Order</h2>
+
+        {/* Discount Code */}
+        <div className="mt-6">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Discount Code
+          </label>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              className="w-full border border-gray-300 rounded-lg p-2"
+              placeholder="Enter discount code"
+            />
+            <button className="bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-2 px-4 rounded-lg">
+              Apply
+            </button>
+          </div>
         </div>
-      ) : (
-        <div>
-          {cart.length === 0 ? (
-            (alert("no cart found"), navigate("/products"))
-          ) : (
-            <section className="shipping">
-              <div className="shippingNav-cont">
-                <div className="shippingNav">
-                  <div onClick={() => navigate("/")}>
-                    <span href="/">HOME</span>
-                  </div>
-                  <div
-                    className="continueCART"
-                    onClick={() => navigate("/products")}
-                  >
-                    <GiShoppingBag size={25} color="navy" />
-                    <span href="/products">SHOP-MORE</span>
-                  </div>
-                  <div className="continueCART">
-                    <GiChart size={20} />
-                    <span>ADMIN-DASHBORD</span>
-                  </div>
-                </div>
-              </div>
 
-              <div>
-                <div className="shippingInfo">
-                  <div className="cost-cont">
-                    <div>
-                      <span>TOTAL ITEMS: </span>
-                      {cart.reduce((a, c) => a + c.quantity, 0)}
-                    </div>
-                    <div>
-                      <span>TOTAL PRICE:</span> $
-                      {cart.reduce((a, c) => a + c.quantity * c.price, 0)}
-                    </div>
-                  </div>
-
-                  <div>
-                    <section className="location">
-                      <div>
-                        <span>current location: </span>
-                        {location.country}, {location.state}, {location.city}
-                      </div>
-                      <div>
-                        <span>delivery location:</span>
-                        {location.address2}
-                      </div>
-                      <div>
-                        <span>shipping fee: </span>${`${shippingFEE}`}
-                      </div>
-                    </section>
-                  </div>
-
-                  <div className="payment">
-                    select payment method :
-                    <div>
-                      <div className="method">
-                        <div>
-                          <BsStripe size={20} color="navy" />
-                          <label> stripe</label>
-                        </div>
-                        <div>
-                          <BsPaypal size={20} color="navy" />
-                          <label> paypal</label>
-                        </div>
-
-                        <div>
-                          <BsBank
-                            size={20}
-                            color="navy"
-                            onClick={() => {
-                              const bttn = document.getElementById("btn");
-                              const div =
-                                document.getElementById("accountNumber");
-                              bttn.value = "DONE";
-                              bttn.addEventListener("click", () => {
-                                div.innerHTML = "";
-                                bttn.value = "PAY NOW";
-                              });
-                              div.innerHTML = `3126143071 
-                        <p>please make a payment of $${total}
-                        to the above account number</p>`;
-                            }}
-                          />
-                          <label> bank transfer</label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div id="accountNumber"></div>
-
-                  <div>
-                    <input
-                      type="button"
-                      value={`PAY NOW ($${total})`}
-                      id="btn"
-                    />
-                  </div>
-                </div>
-              </div>
-            </section>
-          )}
+        {/* Payment Details */}
+        <div className="mt-6">
+          <h3 className="text-md font-semibold mb-2">Payment Details</h3>
+          <div className="flex justify-between text-sm text-gray-700 mb-2">
+            <span>Subtotal:</span>
+            <span>${cart.reduce((a, c) => a + c.quantity * c.price, 0)}</span>
+          </div>
+          <div className="flex justify-between text-sm text-gray-700 mb-2">
+            <span>Shipping Fee:</span>
+            <span>${shippingFEE}</span>
+          </div>
+          <div className="flex justify-between text-sm font-semibold text-gray-800">
+            <span>Total:</span>
+            <span>${total}</span>
+          </div>
         </div>
-      )}
+
+        {/* Payment Button */}
+        <button className="w-full mt-6 bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-2 px-4 rounded-lg">
+          Submit Payment (${total})
+        </button>
+      </div>
     </div>
   );
 }
