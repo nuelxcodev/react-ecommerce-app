@@ -1,11 +1,9 @@
 import { CiUser } from "react-icons/ci";
 import { AiOutlineGift } from "react-icons/ai";
-import Part from "./part/Partcart";
 import { useContext, useState } from "react";
 import { Store } from "../../utils/Store";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../utils/Auth";
-import Logo from "./part/logo";
 import { BiCart, BiMenu } from "react-icons/bi";
 
 function Nav() {
