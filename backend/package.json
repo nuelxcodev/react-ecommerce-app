@@ -5,9 +5,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "build": "NODE_ENV=production npm prune --production",
-    "start": "node index.js",
+    "dev": "nodemon index.js",            // Local development
+    "build": "NODE_ENV=production npm prune --production", // Production build
+    "start": "node index.js"              // Start the production server
   },
   "keywords": [],
   "author": "",
@@ -30,7 +30,6 @@
     "stripe": "^14.25.0"
   },
   "engines": {
-  "node": "18.x"  
-}
-
+    "node": "18.x"
+  }
 }
