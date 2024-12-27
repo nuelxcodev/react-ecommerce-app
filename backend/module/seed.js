@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import data from "../utils/Data.js";
+import data from "../utils/Productsdata.js";
 import Item from "../schemas/items.js";
 import Dbconnection from "../utils/mongodbcon.js"; // Import default function
 
