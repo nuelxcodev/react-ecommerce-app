@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@react-oauth/google": "^0.12.1",
+    "@stripe/react-stripe-js": "^3.1.1",
+    "@stripe/stripe-js": "^5.4.0",
     "axios": "^1.6.2",
     "buffer": "^6.0.3",
     "cookie.js": "^7.0.1",

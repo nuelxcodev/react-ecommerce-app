@@ -2,6 +2,8 @@ import OTP from "../schemas/OTPschema.js";
 import { sendMail } from "../utils/mailer.js";
 import { comparer, hasher } from "../utils/hasher.js";
 import User from "../schemas/user.js";
+import jwt from "jsonwebtoken";
+import { checkexpiredOTP } from "../utils/regularfunctions.js";
 
 // OTP generator
 export async function OTPgenerator() {
@@ -13,7 +15,7 @@ export async function OTPgenerator() {
 }
 
 // send OTP
-export async function sendOTP({ email, subject, message, duration = 1 }) {
+export async function sendOTP({ email, subject, message, duration = 2 }) {
   try {
     if (!email && subject && message) {
       throw Error("please enter values email, subject, message");
@@ -51,7 +53,7 @@ export async function sendOTP({ email, subject, message, duration = 1 }) {
             }
             .header {
               text-align: center;
-              background-color: pink;
+              background-color: hotpink;
               color: white;
               padding: 20px;
               font-size: 24px;
@@ -106,7 +108,7 @@ export async function sendOTP({ email, subject, message, duration = 1 }) {
       email,
       otp: hash,
       createdAt: Date.now(),
-      expiresAt: Date.now() + 3600000 * +duration,
+      expiresAt: Date.now() + 60000 * +duration,
     });
   } catch (error) {
     throw error;
@@ -117,35 +119,52 @@ export async function OTPverification(req, res) {
   try {
     const { otp, email } = req.body;
 
+    // Validate the input
     if (!otp || !email) {
       return res
         .status(400)
         .json({ message: "Credentials must be valid and not empty" });
     }
+
+    // Find the OTP record for the email
     const chechotp = await OTP.findOne({ email });
     if (!chechotp) {
       return res
         .status(404)
         .json({ message: "No user with this email was found" });
     }
+
+    // Check if the OTP is expired
+    const isexpired = checkexpiredOTP(chechotp);
+    if (isexpired) {
+      return res.status(400).json({ message: "OTP has expired" });
+    }
+
+    // Validate the provided OTP
     const validateotp = await comparer(otp, chechotp.otp);
     if (!validateotp) {
       return res.status(401).json({ message: "Invalid OTP" });
     }
+
+    // Find the user and update their record with a token
     const unverifieduser = await User.findOne({ email });
     if (!unverifieduser) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    await unverifieduser.updateOne({ isVerified: true });
+    // Generate a JWT token and update the user
+    const token = jwt.sign({ email }, process.env.SECRET_JWT_KEY, {
+      expiresIn: "1d", // Token valid for 1 day
+    });
+    await unverifieduser.updateOne({ token});
 
-    return res.status(200).json({ message: "User verified successfully" });
+    // Respond with success
+    return res.status(200).json({
+      message: "User verified successfully",
+      token,
+    });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    console.error("Error during OTP verification:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 }
-
-// const token = jwt.sign({ username }, process.env.SCERET_JWT_KEY, {
-//   expiresIn: "1d",
-// });
-// res.status(200).send(token);

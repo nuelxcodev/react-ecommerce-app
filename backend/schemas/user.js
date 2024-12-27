@@ -9,14 +9,14 @@ const userSchema = new Schema({
   email: {
     type: mongoose.SchemaTypes.String,
     required: true,
+    unique: true
   },
   password: {
     type: mongoose.SchemaTypes.String,
     required: true,
   },
-  verified: {
-    type: mongoose.SchemaTypes.Boolean,
-    default: false,
+  token: {
+    type: mongoose.SchemaTypes.String,
   },
 });
 

@@ -1,17 +1,19 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { BiLogoGooglePlus } from "react-icons/bi";
 import { BsFacebook, BsLinkedin } from "react-icons/bs";
 import { useAuth } from "../../utils/Auth";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 import { useLocation, useNavigate } from "react-router-dom";
 
-function Loginform() {
+function LoginForm() {
   const auth = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const redirectpath = location.state?.path || "/";
+  const redirectPath = location.state?.path || "/";
+  const [isResetPassword, setIsResetPassword] = useState(false); // Toggle reset password mode
+  const [resetMessage, setResetMessage] = useState("");
 
   const {
     register,
@@ -19,31 +21,52 @@ function Loginform() {
     formState: { errors },
   } = useForm();
 
-  const loginApi = (data) => {
-    axios.post("http://localhost:8080/api/login", data).then((response) => {
-      if (response.data.status === "success") {
-        const decode = jwtDecode(response.data.token);
-        auth.login(decode);
-        navigate(redirectpath, { replace: true });
-      }
-    });
+  const loginApi = async (data) => {
+    try {
+      const response = await axios.post("http://localhost:8080/api/login", data);
+      const decode = jwtDecode(response.data.token);
+      auth.login(decode);
+      navigate(redirectPath, { replace: true });
+    } catch (error) {
+      alert(error.response?.data?.message || "An error occurred during login.");
+    }
+  };
+
+  const resetPasswordApi = async (data) => {
+    console.log(data)
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/resetpassword",
+        { email: data.email }
+      );
+      setResetMessage(response.data.message);
+    } catch (error) {
+      setResetMessage(error.response?.data?.message || "An error occurred.");
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit(loginApi)}>
-      <h1>Sign in</h1>
-      <div className="social-container">
-        <a href="#" className="social">
-          <BsFacebook size={20} />
-        </a>
-        <a href="#" className="social">
-          <BiLogoGooglePlus size={20} />
-        </a>
-        <a href="#" className="social">
-          <BsLinkedin size={20} />
-        </a>
-      </div>
-      <span>or use your account</span>
+    <form
+      onSubmit={handleSubmit(isResetPassword ? resetPasswordApi : loginApi)}
+    >
+      <h1>{isResetPassword ? "Reset Password" : "Sign In"}</h1>
+
+      {!isResetPassword && (
+        <div className="social-container">
+          <a href="#" className="social">
+            <BsFacebook size={20} />
+          </a>
+          <a href="#" className="social">
+            <BiLogoGooglePlus size={20} />
+          </a>
+          <a href="#" className="social">
+            <BsLinkedin size={20} />
+          </a>
+        </div>
+      )}
+
+      <span>{isResetPassword ? "Enter your email to reset password" : "or use your account"}</span>
+
       <input
         type="email"
         placeholder="Email"
@@ -56,16 +79,35 @@ function Loginform() {
         })}
       />
       {errors.email && <p>{errors.email.message}</p>}
-      <input
-        type="password"
-        placeholder="Password"
-        {...register("password", { required: "Password is required" })}
-      />
-      {errors.password && <p>{errors.password.message}</p>}
-      <a href="#">Forgot your password?</a>
-      <button type="submit">Sign In</button>
+
+      {!isResetPassword && (
+        <>
+          <input
+            type="password"
+            placeholder="Password"
+            autoComplete="current-password"
+            {...register("password", { required: "Password is required" })}
+          />
+          {errors.password && <p>{errors.password.message}</p>}
+        </>
+      )}
+
+      <a
+        href="#"
+        onClick={(e) => {
+          e.preventDefault();
+          setIsResetPassword(!isResetPassword);
+          setResetMessage(""); // Clear previous reset messages
+        }}
+      >
+        {isResetPassword ? "Back to Login" : "Forgot your password?"}
+      </a>
+
+      <button type="submit">{isResetPassword ? "Reset Password" : "Sign In"}</button>
+
+      {resetMessage && <p>{resetMessage}</p>}
     </form>
   );
 }
 
-export default Loginform;
+export default LoginForm;

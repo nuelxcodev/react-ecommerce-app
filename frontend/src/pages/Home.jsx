@@ -15,6 +15,9 @@ import {} from "react-icons/gr";
 import { useLocation, useNavigate } from "react-router-dom";
 import headerimg from "../../public/images/header.jpg";
 import LoadingSpinner from "../component/loader";
+import CheckoutForm from "../component/checkoutform";
+import StripeWrapper from "../component/checkoutform";
+
 function Home() {
   const { data, isloading } = useContext(Datacontext);
   const router = useNavigate();

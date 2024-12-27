@@ -24,6 +24,7 @@ function Login() {
     open: false,
   });
   const [isloading, setisloading] = useState(false);
+  const [email, setemail] = useState("");
 
   const {
     register,
@@ -31,20 +32,25 @@ function Login() {
     formState: { errors },
   } = useForm();
 
-  const RegisterApi = (data) => {
-    setisloading(true);
-    axios.post("http://localhost:8080/api/register", data).then((response) => {
-      if (response.status === 200) {
-        setcotpsent({
-          message: response.data.message,
-          open: true,
-        });
-        setisloading(false);
-      }
-    });
+  const RegisterApi = async (data) => {
+    setApierr("");
+    try {
+      setisloading(true);
+      const response = await axios.post(
+        "http://localhost:8080/api/register",
+        data
+      );
+      setcotpsent({
+        message: response.data.message,
+        open: true,
+      });
+      setemail(data.email);
+    } catch (error) {
+      setApierr(error.response.data.message);
+    } finally {
+      setisloading(false);
+    }
   };
-
-  console.log(otpsent);
 
   useEffect(() => {
     const container = document.getElementById("auth-container");
@@ -74,13 +80,14 @@ function Login() {
       <div className="auth-container" id="auth-container">
         <div className="form-container sign-up-container">
           {otpsent.open ? (
-            <OTPForm />
+            <OTPForm email={email} />
           ) : isloading ? (
             <LoadingSpinner />
           ) : (
             <form onSubmit={handleSubmit(RegisterApi)}>
               <h1>Create Account</h1>
-              {err && <p>{err}</p>}
+
+              {/* Display errors */}
               <div className="social-container">
                 <a href="#" className="social">
                   <BsFacebook size={20} />
@@ -92,13 +99,20 @@ function Login() {
                   <BsLinkedin size={20} />
                 </a>
               </div>
-              <span>or use your email for registration</span>
+              {err ? (
+                <p className="text-red-500">{err}</p>
+              ) : (
+                <span>or use your email for registration</span>
+              )}
+
               <input
                 type="text"
                 placeholder="Username"
                 {...register("username", { required: "Name is required" })}
               />
-              {errors.name && <p>{errors.name.message}</p>}
+              {errors.username && (
+                <p className="error-message">{errors.username.message}</p>
+              )}
               <input
                 type="email"
                 placeholder="Email"
@@ -110,18 +124,20 @@ function Login() {
                   },
                 })}
               />
-              {errors.email && <p>{errors.email.message}</p>}
+              {errors.email && (
+                <p className="error-message">{errors.email.message}</p>
+              )}
               <input
                 type="password"
                 placeholder="Password"
                 {...register("password", { required: "Password is required" })}
               />
-              {errors.password && <p>{errors.password.message}</p>}
+              {errors.password && (
+                <p className="error-message">{errors.password.message}</p>
+              )}
               <button type="submit">Sign Up</button>
             </form>
           )}
-
-          {/* <OTPForm/> */}
         </div>
 
         <div className="form-container sign-in-container">
