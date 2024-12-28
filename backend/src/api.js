@@ -1,10 +1,9 @@
 import express from "express";
-import router from "./routes/router.js";
+import router from "../functions/routes/router.js";
 import cors from "cors";
-import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-import Dbconnection from "./utils/mongodbcon.js";
+import Dbconnection from "../functions/utils/mongodbcon.js";
 import serverless from "serverless-http"; // Required for Netlify Functions
 
 dotenv.config();
@@ -20,8 +19,7 @@ app.use((req, res, next) => {
   next();
 });
 
-router.get('/helo',(req,res)=>res.json("hi"))
-// Routes
+
 app.use("/.netlify/functions/api", router);
 
 // MongoDB Connection

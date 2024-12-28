@@ -2,6 +2,7 @@ import { Router } from "express";
 import * as controller from "../controller/authcontroller.js";
 import { OTPverification } from "../controller/otpcontroller.js";
 import { checkOutItems } from "../controller/stripecontroller.js";
+import { handler } from '@netlify/functions'; // Import Netlify functions handler
 
 const router = Router();
 
@@ -18,6 +19,7 @@ router.route("/item").post(controller.items);
 router.route("/getitem").get(controller.getitems);
 
 // checkout stripe
-router.route('/checkout').post(checkOutItems)
+router.route("/checkout").post(checkOutItems);
 
-export default router;
+// Wrap the Express app with the Netlify handler
+export const handler = handler(router);
