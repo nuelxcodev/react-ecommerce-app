@@ -1,9 +1,9 @@
-import OTP from "../schemas/OTPschema.js";
-import { sendMail } from "../utils/mailer.js";
-import { comparer, hasher } from "../utils/hasher.js";
-import User from "../schemas/user.js";
+import OTP from "../functions/schemas/OTPschema.js";
+import { sendMail } from "../functions/utils/mailer.js";
+import { comparer, hasher } from "../functions/utils/hasher.js";
+import User from "../functions/schemas/user.js";
 import jwt from "jsonwebtoken";
-import { checkexpiredOTP } from "../utils/regularfunctions.js";
+import { checkexpiredOTP } from "../functions/utils/regularfunctions.js";
 
 // OTP generator
 export async function OTPgenerator() {

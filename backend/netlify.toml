@@ -1,16 +1,13 @@
 [build]
-  # No frontend static files, so leave 'publish' empty or omit it
-  publish = "" 
-
-  # Functions directory is the root folder
-  functions = "."
+  # The directory for your compiled Netlify functions
+  functions = "build"
 
 [functions]
-  # Ensure all root-level files are included
-  included_files = ["**/*"] 
+  # Include additional files if needed
+  included_files = ["src/**/*", ".env"]
 
 [[redirects]]
-  # Redirect API requests to serverless functions
+  # Redirect API requests to your serverless functions
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200

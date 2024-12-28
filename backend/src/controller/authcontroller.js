@@ -1,10 +1,10 @@
-import User from "../schemas/user.js";
+import User from "../functions/schemas/user.js";
 import bcrypt, { compare } from "bcrypt";
 import jwt from "jsonwebtoken";
-import Item from "../schemas/items.js";
-import { comparer, hasher } from "../utils/hasher.js";
+import Item from "../functions/schemas/items.js";
+import { comparer, hasher } from "../functions/utils/hasher.js";
 import { sendOTP } from "./otpcontroller.js";
-import { sendMail } from "../utils/mailer.js";
+import { sendMail } from "../functions/utils/mailer.js";
 
 export async function register(req, res) {
   const { username, email, password } = req.body;
