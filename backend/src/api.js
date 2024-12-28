@@ -20,6 +20,7 @@ app.use((req, res, next) => {
   next();
 });
 
+router.get('/helo',(req,res)=>res.json("hi"))
 // Routes
 app.use("/.netlify/functions/api", router);
 
