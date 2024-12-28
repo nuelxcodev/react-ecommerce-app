@@ -1,10 +1,12 @@
-import User from "../schemas/user.js";
-import bcrypt, { compare } from "bcrypt";
-import jwt from "jsonwebtoken";
-import Item from "../schemas/items.js";
-import { comparer, hasher } from "../utils/hasher.js";
-import { sendOTP } from "./otpcontroller.js";
-import { sendMail } from "../utils/mailer.js";
+const User = require("../schemas/user.js");
+const bcrypt = require("bcrypt");
+const { compare } = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const Item = require("../schemas/items.js");
+const { comparer, hasher } = require("../utils/hasher.js");
+const { sendOTP } = require("./otpcontroller.js");
+const { sendMail } = require("../utils/mailer.js");
+
 
 export async function register(req, res) {
   const { username, email, password } = req.body;

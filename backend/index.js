@@ -1,13 +1,12 @@
-import express, { urlencoded } from "express";
-import router from "./routes/router.js";
-import cors from "cors";
-import mongoose from "mongoose";
-import cookieParser from "cookie-parser";
-import dotenv from "dotenv";
-import Dbconnection from "./utils/mongodbcon.js";
-import { sendOTP } from "./controller/otpcontroller.js";
-
-
+const express = require("express");
+const { urlencoded } = require("express");
+const router = require("./routes/router.js");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
+const dotenv = require("dotenv");
+const Dbconnection = require("./utils/mongodbcon.js");
+const { sendOTP } = require("./controller/otpcontroller.js");
 
 dotenv.config();
 
