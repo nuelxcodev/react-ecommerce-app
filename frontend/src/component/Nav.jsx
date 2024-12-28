@@ -2,7 +2,7 @@ import { CiUser } from "react-icons/ci";
 import { AiOutlineGift } from "react-icons/ai";
 import { useContext, useState } from "react";
 import { Store } from "../../utils/Store";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../utils/Auth";
 import { BiCart, BiMenu } from "react-icons/bi";
 
@@ -23,13 +23,13 @@ function Nav() {
         {/* Logo Section */}
         <div className="flex justify-between items-center">
           <div>
-            <a
+            <Link
               className="text-gray-800 text-xl font-bold md:text-2xl hover:text-gray-700"
-              href="/"
+              to="/"
               style={{ fontFamily: "cursive" }}
             >
               Nuelmart
-            </a>
+            </Link>
           </div>
 
           {/* Toggle Button for Small Screens */}
@@ -50,37 +50,37 @@ function Nav() {
           className={`${menuOpen ? "block" : "hidden"} md:flex items-center`} // Conditionally show/hide menu
         >
           <div className="flex flex-col md:flex-row md:mx-6">
-            <a
+            <Link
               className="my-1 text-sm text-gray-700 font-medium hover:text-indigo-500 md:mx-4 md:my-0"
-              href="/"
+              to="/"
             >
               Home
-            </a>
-            <a
+            </Link>
+            <Link
               className="my-1 text-sm text-gray-700 font-medium hover:text-indigo-500 md:mx-4 md:my-0"
-              href="/products"
+              to="/products"
             >
               Shop
-            </a>
-            <a
+            </Link>
+            <Link
               className="my-1 text-sm text-gray-700 font-medium hover:text-indigo-500 md:mx-4 md:my-0"
-              href="/#contact"
+              to="/#contact"
             >
               Contact
-            </a>
-            <a
+            </Link>
+            <Link
               className="my-1 text-sm text-gray-700 font-medium hover:text-indigo-500 md:mx-4 md:my-0"
-              href="/#about"
+              to="/#about"
             >
               About
-            </a>
+            </Link>
           </div>
 
           {/* Cart Icon */}
           <div className="flex justify-center md:block">
-            <a
+            <Link
               className="relative text-gray-700 hover:text-gray-600"
-              href="/cart"
+              to="/cart"
             >
               <BiCart size={30} className="-z-10" />
               {cart.length > 0 && (
@@ -88,7 +88,7 @@ function Nav() {
                   {cart.reduce((a, b) => a + b.quantity, 0)}
                 </span>
               )}
-            </a>
+            </Link>
           </div>
 
           {/* Login/Logout */}
@@ -104,12 +104,12 @@ function Nav() {
                 </button>
               </div>
             ) : (
-              <a
+              <Link
                 className="text-sm text-gray-700 font-medium hover:text-indigo-500"
-                href="/login"
+                to="/login"
               >
                 Login
-              </a>
+              </Link>
             )}
           </div>
         </div>
