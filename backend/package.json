@@ -4,12 +4,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
- "scripts": {
-  "dev": "nodemon index.js",
-  "start": "node index.js",
-  "build": "cross-env NODE_ENV=production npm prune --production"
-}
-,
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "build": "npm install && cross-env NODE_ENV=production npm prune --production"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
