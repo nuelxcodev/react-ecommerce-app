@@ -4,9 +4,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "dev": "nodemon index.js"
-  },
+ "scripts": {
+  "dev": "nodemon index.js",
+  "start": "node index.js",
+  "build": "cross-env NODE_ENV=production npm prune --production"
+}
+,
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -21,10 +24,12 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.2",
     "multer": "^1.4.5-lts.1",
+    "netlify-lambda": "^2.0.16",
     "nodemailer": "^6.9.16",
     "nodemon": "^3.0.2",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
+    "serverless-http": "^3.2.0",
     "stripe": "^14.25.0"
   }
 }

@@ -1,11 +1,9 @@
 import { CiUser } from "react-icons/ci";
 import { AiOutlineGift } from "react-icons/ai";
-import Part from "./part/Partcart";
 import { useContext, useState } from "react";
 import { Store } from "../../utils/Store";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../utils/Auth";
-import Logo from "./part/logo";
 import { BiCart, BiMenu } from "react-icons/bi";
 
 function Nav() {
@@ -66,13 +64,13 @@ function Nav() {
             </a>
             <a
               className="my-1 text-sm text-gray-700 font-medium hover:text-indigo-500 md:mx-4 md:my-0"
-              href="/contact"
+              href="/#contact"
             >
               Contact
             </a>
             <a
               className="my-1 text-sm text-gray-700 font-medium hover:text-indigo-500 md:mx-4 md:my-0"
-              href="#about"
+              href="/#about"
             >
               About
             </a>
