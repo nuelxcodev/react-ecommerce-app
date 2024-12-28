@@ -2,6 +2,7 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 
+
 export const Datacontext = createContext();
 
 export const DataProvider = ({ children }) => {
@@ -10,7 +11,7 @@ export const DataProvider = ({ children }) => {
 
   function Apigetdata() {
     setisloading(true);
-    axios.get(`${process.env.API_URI}/getitem`).then((response) => {
+    axios.get(`${import.meta.env.VITE_API_URL}/getitem`).then((response) => {
       response && setisloading(false);
       setdate({ products: response.data });
      

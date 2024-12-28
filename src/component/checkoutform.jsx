@@ -30,7 +30,7 @@ const CheckoutForm = () => {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: "${process.env.CLIENT_URI}/checkout/success", // Redirect URL after successful payment
+        return_url:`${import.meta.env.VITE_CLIENT_URI}/checkout/success`, // Redirect URL after successful payment
       },
     });
 
@@ -64,7 +64,7 @@ const PaymentForm = ({ data }) => {
 
   useEffect(() => {
     // Fetch client secret from server (ensure the server is correctly configured)
-    fetch(`${process.env.API_URI}/checkout`, {
+    fetch(`${import.meta.env.VITE_API_URL}/checkout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

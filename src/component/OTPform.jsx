@@ -43,7 +43,7 @@ function OTPForm({ email }) {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:8080/api/Otpverification",
+        `${import.meta.env.VITE_API_URL}/Otpverification`,
         data
       );
       setSuccessMessage(response.data.message); // Display success message

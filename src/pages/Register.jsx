@@ -37,7 +37,7 @@ function Login() {
     try {
       setisloading(true);
       const response = await axios.post(
-        `${process.env.API_URI}/register`,
+        `${import.meta.env.VITE_API_URL}/register`,
         data
       );
       setcotpsent({

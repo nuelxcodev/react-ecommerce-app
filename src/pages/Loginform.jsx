@@ -36,7 +36,7 @@ function LoginForm() {
     console.log(data)
     try {
       const response = await axios.post(
-        `${process.env.API_URI}/resetpassword`,
+        `${import.meta.env.VITE_API_URL}/resetpassword`,
         { email: data.email }
       );
       setResetMessage(response.data.message);
