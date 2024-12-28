@@ -10,7 +10,7 @@ export const DataProvider = ({ children }) => {
 
   function Apigetdata() {
     setisloading(true);
-    axios.get("http://localhost:8080/api/getitem").then((response) => {
+    axios.get("https://nuelmartapi.onrender.com/api/getitem").then((response) => {
       response && setisloading(false);
       setdate({ products: response.data });
     });
