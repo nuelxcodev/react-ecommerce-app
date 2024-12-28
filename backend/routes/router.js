@@ -1,8 +1,7 @@
-const { Router } = require("express");
-const controller = require("../controller/authcontroller.js");
-const { OTPverification } = require("../controller/otpcontroller.js");
-const { checkOutItems } = require("../controller/stripecontroller.js");
-
+import { Router } from "express";
+import * as controller from "../controller/authcontroller.js";
+import { OTPverification } from "../controller/otpcontroller.js";
+import { checkOutItems } from "../controller/stripecontroller.js";
 
 const router = Router();
 
