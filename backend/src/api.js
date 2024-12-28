@@ -1,10 +1,10 @@
 import express from "express";
-import router from "../routes/router.js";
+import router from "./routes/router.js";
 import cors from "cors";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-import Dbconnection from "../utils/mongodbcon.js";
+import Dbconnection from "./utils/mongodbcon.js";
 import serverless from "serverless-http"; // Required for Netlify Functions
 
 dotenv.config();

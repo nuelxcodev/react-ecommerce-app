@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const data = require("../utils/Productsdata.js");
-const Item = require("../schemas/items.js");
-const Dbconnection = require("../utils/mongodbcon.js"); // Import default function
+const Item = require("../routes/schemas/items.js");
+const Dbconnection = require("../../utils/mongodbcon.js"); // Import default function
 
 
 // Load environment variables
