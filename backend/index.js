@@ -1,12 +1,10 @@
 const express = require("express");
-const { urlencoded } = require("express");
 const router = require("./routes/router.js");
 const cors = require("cors");
-const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 const Dbconnection = require("./utils/mongodbcon.js");
-const { sendOTP } = require("./controller/otpcontroller.js");
+
 
 dotenv.config();
 
