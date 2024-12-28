@@ -1,14 +1,13 @@
 [build]
-  # The directory for your frontend or built files (optional)
-  publish = "dist" # Replace with your build directory (e.g., "build" or "public")
-  
-  # The directory where your backend/serverless functions are located
-  functions = "backend/functions"
+  # No frontend static files, so leave 'publish' empty or omit it
+  publish = "" 
+
+  # Functions directory is the root folder
+  functions = "."
 
 [functions]
-  # Specify the Node.js version (optional, based on your backend requirements)
-  node_bundler = "esbuild"
-  included_files = ["backend/**/*"] # Include all backend files for deployment
+  # Ensure all root-level files are included
+  included_files = ["**/*"] 
 
 [[redirects]]
   # Redirect API requests to serverless functions
