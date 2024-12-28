@@ -3,11 +3,11 @@
   "type": "module",
   "version": "1.0.0",
   "description": "A backend server for handling API requests.",
-  "main": "index.js",
+  "main": "src/api.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js",
-    "build": "npm install && cross-env NODE_ENV=production npm prune --production",
+    "dev": "nodemon src/api.js",
+    "start": "npx netlify-lambda serve src",
+    "build": "npx netlify-lambda build src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -25,10 +25,12 @@
     "mongoose": "^8.0.2",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.16",
+    "serverless-http": "^3.2.0",
     "stripe": "^14.25.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
+    "netlify-lambda": "^2.0.16",
     "nodemon": "^3.0.2"
   }
 }

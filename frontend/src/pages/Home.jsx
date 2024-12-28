@@ -77,7 +77,7 @@ function Home() {
                   key={i}
                   className=" flex flex-col items-center hover:text-blue-700 w-[25%] text-center text-neutral-700"
                   onClick={() =>
-                    router(`/products`, { state: [...Array(categ.name)] })
+                    router(`/products`, { state: categ.name })
                   }
                 >
                   <span className="w-full">{categ.icon}</span>
