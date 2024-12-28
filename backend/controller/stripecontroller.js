@@ -1,4 +1,4 @@
-const Stripe = require('stripe');
+import Stripe from "stripe";
 
 export async function checkOutItems(req, res) {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);

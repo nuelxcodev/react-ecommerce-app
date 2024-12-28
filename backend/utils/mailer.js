@@ -1,9 +1,5 @@
-
-const dotenv = require('dotenv');
-const nodemailer = require('nodemailer');
-
-dotenv.config();
-
+import nodemailer from "nodemailer";
+import dotenv from "dotenv";
 dotenv.config();
 
 
