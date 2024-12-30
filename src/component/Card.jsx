@@ -69,8 +69,8 @@ function Item({ product }) {
                 payload: { ...product, quantity },
               });
             }}
-            className="text-center text-white bg-gradient-to-r
-            from-pink-600 to-pink-800 py-2 px-2 rounded-lg text-xs font-bold
+            className="text-center text-white 
+            bg-pink-700 py-2 px-2 rounded-lg text-xs font-bold
              uppercase tracking-wider shadow-lg transition-all duration-300 hover:bg-pink-900 hover:shadow-xl"
           >
             Buy Now

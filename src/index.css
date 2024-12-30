@@ -5,23 +5,21 @@
 @tailwind components;
 @tailwind utilities;
 
-
-*{
+* {
   margin: 0;
   padding: 0;
 }
 
 body {
-  font-family: poppins,sans-serif;
+  font-family: poppins, sans-serif;
   font-weight: 400;
   scroll-behavior: smooth;
 }
 
 .icon-grid {
-  width: min(400px, 100%);
-  display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+  width: min(500px, 100%);
+  display: flex;
+  justify-content: space-around;
 }
 
 .navcont {
@@ -30,6 +28,3 @@ body {
 .hidescroll::-webkit-scrollbar {
   display: none;
 }
-
-
-

@@ -15,12 +15,12 @@ function Home() {
   const location = useLocation();
 
   const categories = [
-    { name: "Clothes", icon: <GiHanger size={40} /> },
-    { name: "Bags", icon: <BsBag size={40} /> },
-    { name: "Mobiles", icon: <BsPhone size={40} /> },
-    { name: "Laptops", icon: <BsLaptop size={40} /> },
-    { name: "Watches", icon: <BsSmartwatch size={40} /> },
-    { name: "Shoes", icon: <GiRunningShoe size={40} /> },
+    { name: "Clothes", icon: <GiHanger className=" h-5 w-5 md:h-8 md:w-8" /> },
+    { name: "Bags", icon: <BsBag className=" h-5 w-5 md:h-8 md:w-8" /> },
+    { name: "Mobiles", icon: <BsPhone className=" h-5 w-5 md:h-8 md:w-8" /> },
+    { name: "Laptops", icon: <BsLaptop className=" h-5 w-5 md:h-8 md:w-8" /> },
+    { name: "Watches", icon: <BsSmartwatch className=" h-5 w-5 md:h-8 md:w-8" /> },
+    { name: "Shoes", icon: <GiRunningShoe className=" h-5 w-5 md:h-8 md:w-8" /> },
   ];
 
   return (
@@ -35,14 +35,14 @@ function Home() {
           alt="Background"
           className="absolute h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/80 "></div>
-        <div className="relative flex flex-col justify-center items-center md:items-start ml-10 h-full text-neutral-300 text-opacity-35">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/35 to-black/70 "></div>
+        <div className="relative flex flex-col justify-center items-center md:items-start ml-10 h-full text-neutral-300 text-opacity-45">
           <h1 className="text-5xl font-extrabold mb-4">Welcome to Nuelmat</h1>
           <p className="text-lg md:text-xl mb-6 font-light max-w-xl">
             Explore premium products crafted for your style and comfort.
           </p>
           <div className="flex gap-4">
-            <button className="bg-lime-600 py-3 px-6 text-white  text-lg font-medium rounded-lg shadow-lg hover:bg-pink-700 transform hover:scale-105 transition duration-300">
+            <button className="bg-pink-600 py-3 px-6 text-white  text-lg font-medium rounded-lg shadow-lg hover:bg-pink-700 transform hover:scale-105 transition duration-300">
               Shop Now
             </button>
           </div>
@@ -52,20 +52,20 @@ function Home() {
       {/* Main Content */}
       <div className="container mx-auto p-6 flex-1">
         {/* Categories Section */}
-        <div className="mb-20">
+        <div className="mb-[20px] md:mb-20">
           <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">
             Categories
           </h2>
           <div className=" flex justify-center mt-6">
-            <div className="icon-grid w-[700px] bg-neutral-300 p-6 rounded shadow-lg">
+            <div className="icon-grid  p-6 rounded ">
               {categories.map((categ, i) => (
                 <div
                   key={i}
-                  className=" flex flex-col items-center hover:text-blue-700 w-[25%] text-center text-neutral-700"
+                  className=" flex flex-col items-center hover:text-blue-700 w-[25%] text-xs text-center text-neutral-700"
                   onClick={() => router(`/products`, { state: categ.name })}
                 >
-                  <span className="w-full">{categ.icon}</span>
-                  <span className=" w-full">{categ.name}</span>
+                  <span className="text-center ">{categ.icon}</span>
+                  <span className="text-center ">{categ.name}</span>
                 </div>
               ))}
             </div>

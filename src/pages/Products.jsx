@@ -60,7 +60,7 @@ function Products() {
       <Nav />
 
       {/* mobile toggle for the filter */}
-      <div className="md:hidden absolute z-50 bottom-0 right-0 m-6 shadow-lg bg-pink-700 h-11 w-11 rounded-full flex justify-center items-center ">
+      <div className="md:hidden absolute z-50 bottom-10 right-9  shadow-lg bg-pink-700 h-11 w-11 rounded-full flex justify-center items-center ">
         <BiEdit
           size={30}
           fill="white"
