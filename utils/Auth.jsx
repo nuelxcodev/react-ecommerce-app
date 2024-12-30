@@ -3,7 +3,6 @@
 /* eslint-disable react/prop-types */
 import { createContext, useContext, useState } from "react";
 import { Store } from "./Store";
-import { useNavigate } from "react-router-dom";
 
 const Authcontext = createContext(null);
 

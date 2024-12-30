@@ -14,7 +14,6 @@ export const DataProvider = ({ children }) => {
     axios.get(`${import.meta.env.VITE_API_URL}/getitem`).then((response) => {
       response && setisloading(false);
       setdate({ products: response.data });
-     
     });
   }
 

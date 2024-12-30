@@ -26,7 +26,8 @@ function Footer() {
                 placeholder="Your Message"
                 className="bg-gray-700 p-2 rounded outline-none text-white h-24"
               />
-              <button className="bg-pink-600 hover:bg-pink-500 p-2 rounded font-semibold">
+              <button className=" bg-gradient-to-r
+            from-pink-600 to-pink-800 hover:bg-pink-500 p-2 rounded font-semibold">
                 Send Message
               </button>
             </form>

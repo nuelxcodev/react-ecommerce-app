@@ -29,7 +29,7 @@ function ProductScreen() {
   const { user } = state;
 
   const location = useLocation();
-  const seeachId = location.pathname.slice('/product'.length);
+  const seeachId = location.pathname.slice("/product".length);
 
   const product = data.products.find(
     (product) => product._id === seeachId.slice(1)
@@ -47,14 +47,16 @@ function ProductScreen() {
   }
 
   const addToCartHandler = () => {
-    dispatch({ type: "CART_ADD_ITEM", payload: { ...product, quantity } });
-    alert("Product added to cart!");
+    dispatch({
+      type: "ADD_ITEM",
+      payload: { ...product, quantity },
+    });
   };
 
   return (
     <div className="flex-1">
       <Nav />
-      <div className="container mx-auto p-6 h-screen flex-1 justify-center items-center bg-gray-50 text-sm">
+      <div className="container mx-auto md:p-6 h-screen flex-1 justify-center items-center bg-gray-50 text-sm">
         <div className=" mt-11 grid grid-cols-1 lg:grid-cols-2 gap-12 shadow-lg rounded-lg bg-white p-6 sm:text-xs">
           {/* Product Images */}
           <div className="space-y-4">
@@ -114,7 +116,16 @@ function ProductScreen() {
               <div className="flex items-center space-x-2 text-gray-700">
                 <FaBoxOpen className="text-green-500" />
                 <span>
-                  <b>In stock:</b> <span className={product.countInStock>0?'text-green-700':'text-red-700 line-through'}>instock</span>
+                  <b>In stock:</b>{" "}
+                  <span
+                    className={
+                      product.countInStock > 0
+                        ? "text-green-700"
+                        : "text-red-700 line-through"
+                    }
+                  >
+                    instock
+                  </span>
                 </span>
               </div>
             </div>

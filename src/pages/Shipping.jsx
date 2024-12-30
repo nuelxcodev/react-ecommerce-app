@@ -167,7 +167,7 @@ function Shipping() {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-2 px-4 rounded-lg"
+            className="w-full bg-pink-700 hover:bg-pink-800 text-white font-semibold py-2 px-4 rounded-lg"
           >
             Submit Shipping Details
           </button>

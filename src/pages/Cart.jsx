@@ -13,10 +13,10 @@ export default function Cart() {
   return (
     <div className="flex justify-center items-center h-screen bg-neutral-200 font-sans text-sm font-bold w-full">
       <Nav />
-      <div className="card w-full max-w-4xl bg-white shadow-lg rounded-lg overflow-hidden ">
-        <div className="flex flex-wrap border border-white">
+      <div className="h-screen flex justify-center md:items-center ">
+        <div className="overflow-hidden mt-16 flex flex-wrap  border-white bg-white md:rounded-lg md:shadow-lg">
           {/* Cart Items Section */}
-          <div className="w-full md:w-2/3 p-5 lg:h-[50vh] h-[45vh]  ">
+          <div className="w-full md:w-2/3 p-5  border overflow-hidden">
             <div className="mb-5">
               <div className="flex justify-between items-center">
                 <h4 className="text-xl font-bold">Shopping Cart</h4>
@@ -34,11 +34,13 @@ export default function Cart() {
                 </button>
               </div>
             ) : (
-              <div className="overflow-scroll lg:h-full hidescroll">
+              <div className="overflow-y-auto max-h-72 max-md:pb-10 hidescroll">
+                {" "}
+                {/* Makes it scrollable */}
                 {cart.map((item) => (
                   <div
                     key={item.slug}
-                    className="flex items-center justify-between border-b py-4 over"
+                    className="flex items-center justify-between border-b py-4"
                   >
                     <div className="w-16">
                       <img
@@ -79,11 +81,6 @@ export default function Cart() {
                       >
                         <BiTrash size={24} />
                       </button>
-                    </div>
-                    <div className="flex items-center">
-                      <span className="ml-4 text-gray-500 cursor-pointer">
-                        &#10005;
-                      </span>
                     </div>
                   </div>
                 ))}

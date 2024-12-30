@@ -1,170 +1,302 @@
-/* eslint-disable no-unused-vars */
-import { CiLock, CiMail } from "react-icons/ci";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { BiLogoGooglePlus, BiX } from "react-icons/bi";
-import { useLocation, useNavigate } from "react-router-dom";
-import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
-import axios from "axios";
-import { useAuth } from "../../utils/Auth";
-import { jwtDecode } from "jwt-decode";
-import { useState, useEffect } from "react";
-import { BsFacebook, BsLinkedin } from "react-icons/bs";
-import Loginform from "./Loginform";
-import OTPForm from "../component/OTPform";
 import LoadingSpinner from "../component/loader";
+import { motion } from "framer-motion";
+import { useLocation, useNavigate } from "react-router-dom";
+import { apicall } from "../../utils/Authapicalls";
 
 function Login() {
   const navigate = useNavigate();
-  const auth = useAuth();
   const location = useLocation();
-  const redirectpath = location.state?.path || "/";
-  const [err, setApierr] = useState("");
-  const [otpsent, setcotpsent] = useState({
-    message: "",
-    open: false,
-  });
-  const [isloading, setisloading] = useState(false);
-  const [email, setemail] = useState("");
+  const redirectPath = location.state?.path || "/";
+  const [err, setApiErr] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSignUpActive, setIsSignUpActive] = useState(false);
+  const [isOTPActive, setIsOTPActive] = useState(false);
+  const [isForgotPasswordActive, setIsForgotPasswordActive] = useState(false);
+  const [otp, setOtp] = useState(new Array(5).fill(""));
+  const [successMessage, setSuccessMessage] = useState("");
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
-  const RegisterApi = async (data) => {
-    setApierr("");
-    try {
-      setisloading(true);
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/register`,
-        data
-      );
-      setcotpsent({
-        message: response.data.message,
-        open: true,
-      });
-      setemail(data.email);
-    } catch (error) {
-      setApierr(error.response.data.message);
-    } finally {
-      setisloading(false);
-    }
+  const handleToggleSignUp = () => {
+    setIsSignUpActive(!isSignUpActive);
+    setApiErr("");
+  };
+
+  const handleToggleForgotPassword = () => {
+    setIsForgotPasswordActive(!isForgotPasswordActive);
+    setApiErr("");
   };
 
   useEffect(() => {
-    const container = document.getElementById("auth-container");
+    reset({ email: "", password: "" });
+  }, [isSignUpActive, isForgotPasswordActive]);
 
-    const handleSignUpClick = () => {
-      container.classList.add("right-panel-active");
+  const onsumbit = async (data) => {
+    await apicall({
+      apiroute: isSignUpActive
+        ? "register"
+        : isForgotPasswordActive
+        ? "resetpassword"
+        : isOTPActive
+        ? "Otpverification"
+        : "login",
+      apidata: data,
+      setIsOTPActive,
+      setIsLoading,
+      setApiErr,
+      setSuccessMessage,
+    });
+  };
+
+  const handleChange = (element, index) => {
+    if (isNaN(element.value)) return;
+    const newOtp = [...otp];
+    newOtp[index] = element.value;
+    setOtp(newOtp);
+
+    if (element.nextSibling) {
+      element.nextSibling.focus();
+    }
+  };
+
+  const handleOTPSubmit = async (e) => {
+    e.preventDefault();
+
+    // Reset messages
+    setErrorMessage("");
+    setSuccessMessage("");
+
+    const data = {
+      otp: otp.join(""),
+      email,
     };
-
-    const handleSignInClick = () => {
-      container.classList.remove("right-panel-active");
-    };
-
-    const signUpButton = document.getElementById("signUp");
-    const signInButton = document.getElementById("signIn");
-
-    if (signUpButton) signUpButton.onclick = handleSignUpClick;
-    if (signInButton) signInButton.onclick = handleSignInClick;
-
-    return () => {
-      if (signUpButton) signUpButton.onclick = null;
-      if (signInButton) signInButton.onclick = null;
-    };
-  }, []);
+  };
 
   return (
-    <div className="auth-cont">
-      <div className="auth-container" id="auth-container">
-        <div className="form-container sign-up-container">
-          {otpsent.open ? (
-            <OTPForm email={email} />
-          ) : isloading ? (
-            <LoadingSpinner />
-          ) : (
-            <form onSubmit={handleSubmit(RegisterApi)}>
-              <h1>Create Account</h1>
-
-              {/* Display errors */}
-              <div className="social-container">
-                <a href="#" className="social">
-                  <BsFacebook size={20} />
-                </a>
-                <a href="#" className="social">
-                  <BiLogoGooglePlus size={20} />
-                </a>
-                <a href="#" className="social">
-                  <BsLinkedin size={20} />
-                </a>
-              </div>
-              {err ? (
-                <p className="text-red-500">{err}</p>
-              ) : (
-                <span>or use your email for registration</span>
-              )}
-
-              <input
-                type="text"
-                placeholder="Username"
-                {...register("username", { required: "Name is required" })}
-              />
-              {errors.username && (
-                <p className="error-message">{errors.username.message}</p>
-              )}
-              <input
-                type="email"
-                placeholder="Email"
-                {...register("email", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                    message: "Invalid email address",
-                  },
-                })}
-              />
-              {errors.email && (
-                <p className="error-message">{errors.email.message}</p>
-              )}
-              <input
-                type="password"
-                placeholder="Password"
-                {...register("password", { required: "Password is required" })}
-              />
-              {errors.password && (
-                <p className="error-message">{errors.password.message}</p>
-              )}
-              <button type="submit">Sign Up</button>
-            </form>
-          )}
-        </div>
-
-        <div className="form-container sign-in-container">
-          <Loginform />
-        </div>
-
-        <div className="overlay-container">
-          <div className="overlay">
-            <div className="overlay-panel overlay-left">
-              <h1>Welcome Back!</h1>
-              <p>
-                To keep connected with us please login with your personal info
-              </p>
-              <button className="ghost" id="signIn">
-                Sign In
-              </button>
-            </div>
-            <div className="overlay-panel overlay-right">
-              <h1>Hello, Friend!</h1>
-              <p>Enter your personal details and start your journey with us</p>
-              <button className="ghost" id="signUp">
-                Sign Up
-              </button>
-            </div>
+    <div className="flex justify-center items-center min-h-screen md:w-[70%] h-[300px]">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="flex flex-col lg:flex-row w-full max-w-6xl bg-neutral-300 rounded-lg shadow-2xl overflow-hidden"
+      >
+        {/* Left Section: Branding */}
+        <div className="hidden lg:flex w-1/2 bg-gradient-to-r from-pink-900 via-pink-500 md:to-neutral-300 to-white p-10 text-white">
+          <div className="flex flex-col justify-center space-y-6">
+            <h1 className="text-4xl font-extrabold">Welcome to Nuelmart</h1>
+            <p className="text-lg">
+              Discover the power of our e-commerce dashboard to streamline your
+              business operations.
+            </p>
           </div>
         </div>
-      </div>
+
+        {/* Right Section: Form */}
+        <div className="w-full lg:w-1/2 p-8 lg:p-16">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-800">
+              {isOTPActive
+                ? "Enter OTP"
+                : isForgotPasswordActive
+                ? "Forgot Password"
+                : isSignUpActive
+                ? "Create an Account"
+                : "Welcome Back"}
+            </h2>
+
+            <p className="text-sm text-gray-600">
+              {/* Error Message */}
+              {isOTPActive
+                ? "Check your email for the OTP code."
+                : isForgotPasswordActive
+                ? "Enter your email to reset your password."
+                : isSignUpActive
+                ? "Register to get started"
+                : "Login to access your account"}
+            </p>
+            {successMessage && (
+              <p className="text-green-500 text-center mt-4 text-sm">
+                {successMessage}
+              </p>
+            )}
+            {err && (
+              <p className="text-red-500 text-center mt-4 text-sm">{err}</p>
+            )}
+          </div>
+
+          <motion.div
+            key={
+              isOTPActive
+                ? "otp"
+                : isForgotPasswordActive
+                ? "forgot"
+                : isSignUpActive
+                ? "register"
+                : "login"
+            }
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            {isOTPActive ? (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  onsumbit(otp.join(""));
+                }}
+                className="space-y-4"
+              >
+                <div className="flex justify-center gap-2 mb-6">
+                  {otp.map((data, index) => (
+                    <input
+                      key={index}
+                      type="text"
+                      maxLength="1"
+                      value={data}
+                      onChange={(e) => handleChange(e.target, index)}
+                      className="w-12 h-12 border border-gray-300 rounded text-center text-xl font-medium focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  ))}
+                </div>
+                <button
+                  type="submit"
+                  className="w-full py-3 bg-pink-500 text-white rounded-md hover:bg-pink-600 transition-all shadow-md"
+                >
+                  Verify OTP
+                </button>
+              </form>
+            ) : isForgotPasswordActive ? (
+              <form onSubmit={handleSubmit(onsumbit)} className="space-y-4">
+                <input
+                  type="email"
+                  placeholder="Email"
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                      message: "Invalid email address",
+                    },
+                  })}
+                  className="w-full bg-gray-100 p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-pink-500 focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  className="w-full py-3 bg-pink-500 text-white rounded-md hover:bg-pink-600 transition-all shadow-md"
+                >
+                  Reset Password
+                </button>
+              </form>
+            ) : isSignUpActive ? (
+              // register user form
+              <form onSubmit={handleSubmit(onsumbit)} className="space-y-4">
+                <input
+                  type="text"
+                  placeholder="Username"
+                  {...register("username", {
+                    required: "Username is required",
+                  })}
+                  className="w-full bg-gray-100 p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-pink-500 focus:outline-none"
+                />
+                <input
+                  type="email"
+                  placeholder="Email"
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                      message: "Invalid email address",
+                    },
+                  })}
+                  className="w-full bg-gray-100 p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-pink-500 focus:outline-none"
+                />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  {...register("password", {
+                    required: "Password is required",
+                  })}
+                  className="w-full bg-gray-100 p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-pink-500 focus:outline-none"
+                />
+                {errors.password && (
+                  <p className="text-red-500 text-xs">
+                    {errors.password.message}
+                  </p>
+                )}
+                <button
+                  type="submit"
+                  className="w-full py-3 bg-pink-500 text-white rounded-md hover:bg-pink-600 transition-all shadow-md"
+                >
+                  {isLoading ? <LoadingSpinner /> : "Register"}
+                </button>
+              </form>
+            ) : (
+              // user login form
+              <form onSubmit={handleSubmit(onsumbit)} className="space-y-4">
+                <input
+                  type="email"
+                  placeholder="Email"
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                      message: "Invalid email address",
+                    },
+                  })}
+                  className="w-full bg-gray-100 p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-pink-500 focus:outline-none"
+                />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  className="w-full bg-gray-100 p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-pink-500 focus:outline-none"
+                  {...register("password", {
+                    required: "password is required",
+                  })}
+                />
+                {errors.password && (
+                  <p className="text-red-500 text-xs">
+                    {errors.password.message}
+                  </p>
+                )}
+                <button
+                  type="submit"
+                  className="w-full py-3 bg-pink-500 text-white rounded-md hover:bg-pink-600 transition-all shadow-md"
+                >
+                  Login
+                </button>
+              </form>
+            )}
+          </motion.div>
+
+          {/* Toggle Buttons */}
+          <div className="mt-6 text-center">
+            {!isOTPActive && !isForgotPasswordActive && (
+              <button
+                onClick={handleToggleSignUp}
+                className="text-pink-500 hover:text-pink-600 font-medium text-sm"
+              >
+                {isSignUpActive
+                  ? "Already have an account? Login"
+                  : "Don't have an account? Sign Up"}
+              </button>
+            )}
+            {!isSignUpActive && !isOTPActive && (
+              <button
+                onClick={handleToggleForgotPassword}
+                className="block mt-4 text-gray-500 hover:text-gray-600 text-sm"
+              >
+                {isForgotPasswordActive ? "Back to login" : "Forgot Password?"}
+              </button>
+            )}
+          </div>
+        </div>
+      </motion.div>
     </div>
   );
 }
