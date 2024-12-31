@@ -11,12 +11,12 @@ export default function Cart() {
   const { cart } = state;
 
   return (
-    <div className="flex justify-center items-center h-screen bg-neutral-200 font-sans text-sm font-bold w-full">
+    <div className="flex justify-center items-center h-screen bg-neutral-200 font-sans text-sm  w-full">
       <Nav />
-      <div className="h-screen flex justify-center md:items-center ">
-        <div className="overflow-hidden mt-16 flex flex-wrap  border-white bg-white md:rounded-lg md:shadow-lg">
+      <div className="flex justify-center md:items-center ">
+        <div style={{width:'min(900px, 100vw)'}} className="mt-16 flex flex-wrap md:overflow-hidden  border-white bg-white md:rounded-lg md:shadow-lg">
           {/* Cart Items Section */}
-          <div className="w-full md:w-2/3 p-5  border overflow-hidden">
+          <div className="w-full md:w-2/3 p-5">
             <div className="mb-5">
               <div className="flex justify-between items-center">
                 <h4 className="text-xl font-bold">Shopping Cart</h4>
@@ -111,12 +111,6 @@ export default function Cart() {
               <select className="w-full border p-2 bg-transparent">
                 <option>Standard-Delivery- $5.00</option>
               </select>
-              <label className="block mt-4 mb-2">GIVE CODE</label>
-              <input
-                id="code"
-                className="w-full border p-2 bg-transparent"
-                placeholder="Enter your code"
-              />
             </form>
             <div className="flex justify-between border-t py-4">
               <div>TOTAL PRICE</div>

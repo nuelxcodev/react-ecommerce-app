@@ -84,10 +84,9 @@ function Nav() {
               cart
             </Link>
             {/* mobile login */}
-            <div className="my-3">
+            <div className="my-3 md:hidden">
               {user ? (
-                <div className="flex items-center space-x-4">
-                  <span className="text-gray-700">{user.name}</span>
+                <div className="flex items-center space-x-4 ">
                   <button
                     className="text-sm text-red-500 hover:text-red-700"
                     onClick={handleLogout}
@@ -97,7 +96,7 @@ function Nav() {
                 </div>
               ) : (
                 <Link
-                  className="my-3 text-sm text-gray-700 font-medium hover:text-indigo-500 md:hidden"
+                  className="my-3 text-sm text-gray-700 font-medium hover:text-indigo-500"
                   to="/login"
                 >
                   login
@@ -123,16 +122,18 @@ function Nav() {
           </div>
 
           {/* Login/Logout */}
-          <div className="ml-4">
+          <div className="ml-4 bg-neutral-200 px-2 rounded-md ">
             {user ? (
-              <div className="flex items-center space-x-4">
-                <span className="text-gray-700">{user.name}</span>
+              <div className="flex flex-col items-center space-x-4">
                 <button
                   className="text-sm text-red-500 hover:text-red-700"
                   onClick={handleLogout}
                 >
                   Logout
                 </button>
+                <div className="text-gray-700 text-[10px]">
+                  <span>{user?.email}</span>
+                </div>
               </div>
             ) : (
               <Link

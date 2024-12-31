@@ -4,10 +4,12 @@ import LoadingSpinner from "../component/loader";
 import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 import { apicall } from "../../utils/Authapicalls";
+import { useAuth } from "../../utils/Auth";
 
 function Login() {
   const navigate = useNavigate();
   const location = useLocation();
+  const auth = useAuth();
   const redirectPath = location.state?.path || "/";
   const [err, setApiErr] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -33,7 +35,6 @@ function Login() {
     setIsForgotPasswordActive(!isForgotPasswordActive);
     setApiErr("");
   };
-
   useEffect(() => {
     reset({ email: "", password: "" });
   }, [isSignUpActive, isForgotPasswordActive]);
@@ -52,6 +53,9 @@ function Login() {
       setIsLoading,
       setApiErr,
       setSuccessMessage,
+    }).then((data) => {
+      auth.login(data);
+      data && navigate(redirectPath, { replace: true });
     });
   };
 
@@ -66,26 +70,13 @@ function Login() {
     }
   };
 
-  const handleOTPSubmit = async (e) => {
-    e.preventDefault();
-
-    // Reset messages
-    setErrorMessage("");
-    setSuccessMessage("");
-
-    const data = {
-      otp: otp.join(""),
-      email,
-    };
-  };
-
   return (
     <div className="flex justify-center items-center min-h-screen md:w-[70%] h-[300px]">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="flex flex-col lg:flex-row w-full max-w-6xl bg-neutral-300 rounded-lg shadow-2xl overflow-hidden"
+        className="flex flex-col lg:flex-row w-full max-w-6xl md:bg-neutral-300 rounded-lg shadow-2xl overflow-hidden"
       >
         {/* Left Section: Branding */}
         <div className="hidden lg:flex w-1/2 bg-gradient-to-r from-pink-900 via-pink-500 md:to-neutral-300 to-white p-10 text-white">
@@ -169,7 +160,13 @@ function Login() {
                   type="submit"
                   className="w-full py-3 bg-pink-500 text-white rounded-md hover:bg-pink-600 transition-all shadow-md"
                 >
-                  Verify OTP
+                  {isLoading ? (
+                    <div className=" w-full flex justify-center items-center">
+                      <LoadingSpinner />
+                    </div>
+                  ) : (
+                    "Verify OTP"
+                  )}
                 </button>
               </form>
             ) : isForgotPasswordActive ? (
@@ -190,7 +187,13 @@ function Login() {
                   type="submit"
                   className="w-full py-3 bg-pink-500 text-white rounded-md hover:bg-pink-600 transition-all shadow-md"
                 >
-                  Reset Password
+                  {isLoading ? (
+                    <div className=" w-full flex justify-center items-center">
+                      <LoadingSpinner />
+                    </div>
+                  ) : (
+                    "Reset Password"
+                  )}
                 </button>
               </form>
             ) : isSignUpActive ? (
@@ -233,7 +236,13 @@ function Login() {
                   type="submit"
                   className="w-full py-3 bg-pink-500 text-white rounded-md hover:bg-pink-600 transition-all shadow-md"
                 >
-                  {isLoading ? <LoadingSpinner /> : "Register"}
+                  {isLoading ? (
+                    <div className=" w-full flex justify-center items-center">
+                      <LoadingSpinner />
+                    </div>
+                  ) : (
+                    "Register"
+                  )}
                 </button>
               </form>
             ) : (
@@ -268,7 +277,13 @@ function Login() {
                   type="submit"
                   className="w-full py-3 bg-pink-500 text-white rounded-md hover:bg-pink-600 transition-all shadow-md"
                 >
-                  Login
+                  {isLoading ? (
+                    <div className=" w-full flex justify-center items-center">
+                      <LoadingSpinner />
+                    </div>
+                  ) : (
+                    "Login"
+                  )}
                 </button>
               </form>
             )}

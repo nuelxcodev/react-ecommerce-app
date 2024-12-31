@@ -5,17 +5,17 @@ import { Datacontext } from "../../utils/Data";
 import Nav from "../component/Nav";
 import LoadingSpinner from "../component/loader";
 import { BiEdit } from "react-icons/bi";
-
+import { checkItemesWith } from "../../utils/helper";
 
 function Products() {
-  const navigate = useNavigate();
   const location = useLocation();
-
-  console.log(location);
-  const { data, isloading } = useContext(Datacontext);
+  const params = new URLSearchParams(location.search);
+  const category_search = params.get("category")?.toLowerCase();
+  const router = useNavigate();
 
   const [filteredsearch, setfilteredsearch] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const { data, isloading } = useContext(Datacontext);
   const [priceRange, setPriceRange] = useState([0, 1000]); // Price range for filtering
   const [selectedCategory, setSelectedCategory] = useState("");
   const [mobilefilteropen, setmfopen] = useState(true);
@@ -27,14 +27,6 @@ function Products() {
     ...new Set(data.products.map((product) => product.category)),
   ];
 
-  // useEffect(() => {
-  //   if (location.state && location.state.previousPage === "/")
-  //     setSelectedCategory(
-  //       location.state.filterTo.slice(0, location.state.filterTo.length - 1)
-  //     );
-  // }, []);
-
-  // Filter products by price and category
   const filteredProducts = (
     filteredsearch.length === 0 ? data.products : filteredsearch
   ).filter(
@@ -43,8 +35,22 @@ function Products() {
       product.price <= priceRange[1] &&
       (selectedCategory
         ? product.category.toLowerCase() === selectedCategory.toLowerCase()
-        : true)
+        : true) |
+        product.category
+          .toLowerCase()
+          .includes(location.search.toLocaleLowerCase().slice("?"))
   );
+
+  useEffect(() => {
+    category_search &&
+      checkItemesWith({
+        checkingFor: category_search,
+        checkingFrom: data.products,
+      }).then((data) => setfilteredsearch(data));
+      if(!category_search){
+        setfilteredsearch([])
+      }
+  }, [location]);
 
   // Pagination logic
   const lastProductIndex = currentPage * productsPerPage;

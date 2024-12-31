@@ -12,9 +12,9 @@ function Shipping() {
   const { state, dispatch } = useContext(Store);
   const { cart } = state;
 
-  const { user } = useAuth();
+  const auth = useAuth();
 
-  console.log(user);
+  console.log(auth?.user);
 
   const {
     register,
@@ -180,7 +180,7 @@ function Shipping() {
               (total, item) => total + item.quantity * item.price,
               0
             ),
-            email: user?.email,
+            email: auth?.user.email,
           }}
         />
       </div>

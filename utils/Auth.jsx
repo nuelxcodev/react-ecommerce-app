@@ -4,16 +4,14 @@
 import { createContext, useContext, useState } from "react";
 import { Store } from "./Store";
 
-const Authcontext = createContext(null);
+export const Authcontext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const { state, dispatch } = useContext(Store);
   const { user } = state;
- 
 
   const login = (user) => {
     dispatch({ type: "USER", payload: user });
-   
   };
   const logout = () => {
     dispatch({ type: "USER", payload: null });
