@@ -18,6 +18,7 @@ function Login() {
   const [isForgotPasswordActive, setIsForgotPasswordActive] = useState(false);
   const [otp, setOtp] = useState(new Array(5).fill(""));
   const [successMessage, setSuccessMessage] = useState("");
+  const [otpemail, setotpemail] = useState("");
 
   const {
     register,
@@ -29,15 +30,14 @@ function Login() {
   const handleToggleSignUp = () => {
     setIsSignUpActive(!isSignUpActive);
     setApiErr("");
+    reset({ email: "", password: "" });
   };
 
   const handleToggleForgotPassword = () => {
     setIsForgotPasswordActive(!isForgotPasswordActive);
     setApiErr("");
-  };
-  useEffect(() => {
     reset({ email: "", password: "" });
-  }, [isSignUpActive, isForgotPasswordActive]);
+  };
 
   const onsumbit = async (data) => {
     await apicall({
@@ -48,7 +48,7 @@ function Login() {
         : isOTPActive
         ? "Otpverification"
         : "login",
-      apidata: data,
+      apidata: isOTPActive ? { otp:data, email: otpemail } : data,
       setIsOTPActive,
       setIsLoading,
       setApiErr,
