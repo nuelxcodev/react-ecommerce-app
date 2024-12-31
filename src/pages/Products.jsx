@@ -26,6 +26,16 @@ function Products() {
   const categories = [
     ...new Set(data.products.map((product) => product.category)),
   ];
+useEffect(() => {
+    category_search &&
+      checkItemesWith({
+        checkingFor: category_search,
+        checkingFrom: data.products,
+      }).then((data) => setfilteredsearch(data));
+      if(!category_search){
+        setfilteredsearch([])
+      }
+  }, [location, selectedCategory]);
 
   const filteredProducts = (
     filteredsearch.length === 0 ? data.products : filteredsearch
@@ -35,23 +45,11 @@ function Products() {
       product.price <= priceRange[1] &&
       (selectedCategory
         ? product.category.toLowerCase() === selectedCategory.toLowerCase()
-        : true) |
-        product.category
-          .toLowerCase()
-          .includes(location.search.toLocaleLowerCase().slice("?"))
+        : true) 
   );
 
-  useEffect(() => {
-    category_search &&
-      checkItemesWith({
-        checkingFor: category_search,
-        checkingFrom: data.products,
-      }).then((data) => setfilteredsearch(data));
-      if(!category_search){
-        setfilteredsearch([])
-      }
-  }, [location]);
-
+  console.log(filteredProducts)
+  
   // Pagination logic
   const lastProductIndex = currentPage * productsPerPage;
   const firstProductIndex = lastProductIndex - productsPerPage;
