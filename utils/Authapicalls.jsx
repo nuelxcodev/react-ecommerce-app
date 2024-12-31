@@ -1,5 +1,8 @@
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import { useState } from "react";
+
+
 
 export async function apicall({
   apidata,
@@ -8,9 +11,12 @@ export async function apicall({
   setApiErr,
   setSuccessMessage,
   setIsOTPActive,
+  setotpemail
 }) {
   setApiErr("");
   setIsLoading(true);
+
+  console.log(apidata, apiroute)
   try {
     const response = await axios.post(
       `${import.meta.env.VITE_API_URL}/${apiroute}`,
@@ -22,10 +28,12 @@ export async function apicall({
       return jwtDecode(response.data.token);
     }
     if (response.data.nextstep) setIsOTPActive(true);
+    if (response.data.email) setotpemail(email)
   } catch (error) {
     if (error.response) {
       if (error.response.data.otpsent) {
         setIsOTPActive(true);
+        setotpemail(error.response.data.email)
       }
       setApiErr(error.response.data.message); // Server error
     } else {

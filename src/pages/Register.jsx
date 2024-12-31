@@ -41,17 +41,18 @@ function Login() {
 
   const onsumbit = async (data) => {
     await apicall({
-      apiroute: isSignUpActive
+      apiroute: isOTPActive
+        ? "Otpverification"
+        : isSignUpActive
         ? "register"
         : isForgotPasswordActive
         ? "resetpassword"
-        : isOTPActive
-        ? "Otpverification"
         : "login",
-      apidata: isOTPActive ? { otp:data, email: otpemail } : data,
+      apidata: isOTPActive ? { otp: data, email: otpemail } : data,
       setIsOTPActive,
       setIsLoading,
       setApiErr,
+      setotpemail,
       setSuccessMessage,
     }).then((data) => {
       auth.login(data);
@@ -76,7 +77,7 @@ function Login() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="flex flex-col lg:flex-row w-full max-w-6xl md:bg-neutral-300 rounded-lg shadow-2xl overflow-hidden"
+        className="flex flex-col lg:flex-row w-full max-w-6xl md:bg-neutral-300 rounded-lg md:shadow-2xl overflow-hidden"
       >
         {/* Left Section: Branding */}
         <div className="hidden lg:flex w-1/2 bg-gradient-to-r from-pink-900 via-pink-500 md:to-neutral-300 to-white p-10 text-white">
