@@ -37,10 +37,10 @@ function Shipping() {
   let total = cart.reduce((a, c) => a + c.quantity * c.price, shippingFEE);
 
   return (
-    <div className="container my-20 mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div className="container my-20 mx-auto md:p-6 grid grid-cols-1 lg:grid-cols-3 md:gap-6">
       <Nav />
       {/* Shipping Form */}
-      <div className="col-span-2 bg-white p-6 rounded-lg shadow-md">
+      <div className="col-span-2 bg-white p-6 rounded-lg md:shadow-md">
         <h2 className="text-lg font-semibold mb-4">Shipping Details</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -173,13 +173,10 @@ function Shipping() {
           </button>
         </form>
       </div>
-      <div className="bg-neutral-200 p-6 rounded-lg shadow-md">
+      <div className="md:bg-neutral-200 md:p-6 md:rounded-lg md:shadow-md" >
         <PaymentForm
           data={{
-            price: cart.reduce(
-              (total, item) => total + item.quantity * item.price,
-              0
-            ),
+            price: total,
             email: auth?.user.email,
           }}
         />

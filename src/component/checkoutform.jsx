@@ -6,6 +6,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
+import { div } from "framer-motion/client";
 
 // Load Stripe with your public key
 const stripePromise = loadStripe(
@@ -27,7 +28,7 @@ const CheckoutForm = () => {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url:`${import.meta.env.VITE_CLIENT_URI}/checkout/success`, // Redirect URL after successful payment
+        return_url: `${import.meta.env.VITE_CLIENT_URI}/checkout/success`, // Redirect URL after successful payment
       },
     });
     if (error) {
@@ -37,12 +38,15 @@ const CheckoutForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4  rounded-lg">
-      <PaymentElement />
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col justify-center items-center"
+    >
+      <PaymentElement className=" h-full mb-4" />
       <button
         type="submit"
         disabled={!stripe || loading}
-        className={`w-full py-3 px-4 text-white font-semibold rounded-lg ${
+        className={`w-[70%] py-3 px-4  text-white font-semibold rounded-lg ${
           loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
         }`}
       >
@@ -63,7 +67,7 @@ const PaymentForm = ({ data }) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ amount: data.price, email: data.email}), // Replace with dynamic amount
+      body: JSON.stringify({ amount: data.price, email: data.email }), // Replace with dynamic amount
     })
       .then((res) => res.json())
       .then((data) => setClientSecret(data.clientSecret))
