@@ -6,7 +6,7 @@ import ProductScreen from "./pages/product/[_id]";
 import RequireAuth from "../utils/RequireAuth";
 import Cart from "./pages/Cart";
 import Shipping from "./pages/Shipping";
-
+import Success from "./pages/Success";
 
 function App() {
   const Router = createBrowserRouter([
@@ -31,14 +31,21 @@ function App() {
       ),
     },
     {
-      path: "/cart" ,
+      path: "/cart",
       element: <Cart></Cart>,
     },
     {
       path: "/product/:id",
       element: <ProductScreen></ProductScreen>,
     },
-   
+    {
+      path: "/checkout/success",
+      element: (
+        <RequireAuth>
+          <Success />
+        </RequireAuth>
+      ),
+    },
   ]);
 
   return (

@@ -19,25 +19,20 @@ const CheckoutForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!stripe || !elements) {
       console.error("Stripe has not loaded yet.");
       return;
     }
-
     setLoading(true);
-
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
         return_url:`${import.meta.env.VITE_CLIENT_URI}/checkout/success`, // Redirect URL after successful payment
       },
     });
-
     if (error) {
       console.error("Payment failed:", error.message);
     }
-
     setLoading(false);
   };
 
@@ -59,7 +54,6 @@ const CheckoutForm = () => {
 
 const PaymentForm = ({ data }) => {
   const [clientSecret, setClientSecret] = useState("");
-
   console.log(data);
 
   useEffect(() => {
