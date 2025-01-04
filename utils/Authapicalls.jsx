@@ -2,8 +2,6 @@ import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import { useState } from "react";
 
-
-
 export async function apicall({
   apidata,
   apiroute,
@@ -11,33 +9,38 @@ export async function apicall({
   setApiErr,
   setSuccessMessage,
   setIsOTPActive,
-  setotpemail
+  setotpemail,
 }) {
-  setApiErr("");
-  setIsLoading(true);
+ 
+  setApiErr(""); // Clear any previous error
+  setSuccessMessage(""); // Clear any previous success message
+  setIsLoading(true); // Set loading to true
 
-  console.log(apidata, apiroute)
   try {
+    // Make API request
     const response = await axios.post(
       `${import.meta.env.VITE_API_URL}/${apiroute}`,
       apidata
     );
+
+    // Handle success response
     setSuccessMessage(response.data.message);
     console.log(response);
+
     if (response.data.token) {
       return jwtDecode(response.data.token);
     }
-    if (response.data.nextstep) setIsOTPActive(true);
-    if (response.data.email) setotpemail(email)
+
+    if (response.data.success) {
+      setIsOTPActive(true);
+      setotpemail(response.data.email);
+      return;
+    }
   } catch (error) {
     if (error.response) {
-      if (error.response.data.otpsent) {
-        setIsOTPActive(true);
-        setotpemail(error.response.data.email)
-      }
-      setApiErr(error.response.data.message); // Server error
+      setApiErr(error.response.data.message || "Server error occurred.");
     } else {
-      setApiErr("An unexpected error occurred. Please try again."); // Network error
+      setApiErr("An unexpected error occurred. Please try again.");
     }
   } finally {
     setIsLoading(false);

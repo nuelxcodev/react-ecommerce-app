@@ -39,6 +39,15 @@ function Login() {
     reset({ email: "", password: "" });
   };
 
+  const resendOtp = () => {
+    apicall({
+      apiroute: "resendOTP",
+      apidata: { email: otpemail },
+      setSuccessMessage,
+      setApiErr,
+      setIsLoading,
+    });
+  };
   const onsumbit = async (data) => {
     await apicall({
       apiroute: isOTPActive
@@ -292,12 +301,14 @@ function Login() {
 
           {/* Toggle Buttons */}
           <div className="mt-6 text-center">
-            {!isOTPActive && !isForgotPasswordActive && (
+            {!isForgotPasswordActive && (
               <button
-                onClick={handleToggleSignUp}
+                onClick={isOTPActive ? resendOtp : handleToggleSignUp}
                 className="text-pink-500 hover:text-pink-600 font-medium text-sm"
               >
-                {isSignUpActive
+                {isOTPActive
+                  ? "resend otp"
+                  : isSignUpActive
                   ? "Already have an account? Login"
                   : "Don't have an account? Sign Up"}
               </button>
