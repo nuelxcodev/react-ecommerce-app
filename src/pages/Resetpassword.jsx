@@ -1,7 +1,16 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import LoadingSpinner from "../component/loader";
+import { useNavigate } from "react-router-dom";
 
 function ResetPassword() {
+  const params = new URLSearchParams(location.search);
+  const token = params.get("token");
+  const navigate = useNavigate();
+  const [errormessage, seterror] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -9,20 +18,38 @@ function ResetPassword() {
     watch,
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data);
-    alert("Password reset successfully!");
-    // Perform further actions here, e.g., API call
+  const onSubmit = async (data) => {
+    try {
+      setIsLoading(true);
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/reset-password-verification`,
+        {
+          password: data.password,
+          token,
+        }
+      );
+      if (res.data.nextStep) {
+        navigate(`/${res.data.nextStep}`);
+      }
+      console.log(res);
+    } catch (error) {
+      seterror(error.response.data.message)
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const password = watch("password", ""); // Watch password field for validation
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen">
       <div className="w-full max-w-md p-8 bg-white shadow-md rounded-lg">
         <h1 className="text-2xl font-semibold text-center text-gray-800">
           Reset Your Password
         </h1>
+        <p className={errormessage ? "text-red-500" : "text-neutral-500"}>
+          {errormessage ? errormessage : "Nuelmart"}{" "}
+        </p>
         <form className="mt-6" onSubmit={handleSubmit(onSubmit)}>
           {/* New Password Field */}
           <div className="mb-4">
@@ -71,9 +98,9 @@ function ResetPassword() {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
+            className="w-full px-4 py-2 text-white bg-pink-600 rounded-md hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-1"
           >
-            Reset Password
+            {isLoading ? <LoadingSpinner /> : "Reset Password"}
           </button>
         </form>
       </div>

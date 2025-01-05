@@ -7,6 +7,7 @@ import RequireAuth from "../utils/RequireAuth";
 import Cart from "./pages/Cart";
 import Shipping from "./pages/Shipping";
 import Success from "./pages/Success";
+import ResetPassword from "./pages/Resetpassword";
 
 function App() {
   const Router = createBrowserRouter([
@@ -45,6 +46,10 @@ function App() {
           <Success />
         </RequireAuth>
       ),
+    },
+    {
+      path: "/reset-password",
+      element: <ResetPassword></ResetPassword>,
     },
   ]);
 
