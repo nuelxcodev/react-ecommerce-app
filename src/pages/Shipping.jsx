@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Store } from "../../utils/Store";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,7 @@ import Failure from "./Failure";
 
 function Shipping() {
   const navigate = useNavigate();
-  const { state } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   const { cart } = state;
 
   const auth = useAuth();
@@ -42,6 +42,10 @@ function Shipping() {
     setSuccess(true);
     setFailure(false);
   };
+
+  useEffect(() => {
+    dispatch({ type: "RESET_CART" });
+  }, [success]);
 
   return (
     <div>

@@ -55,7 +55,7 @@ function Login() {
         : isSignUpActive
         ? "register"
         : isForgotPasswordActive
-        ? "resetpassword"
+        ? "reset-password-link"
         : "login",
       apidata: isOTPActive ? { otp: data, email: otpemail } : data,
       setIsOTPActive,
