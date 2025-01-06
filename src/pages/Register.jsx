@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 import { apicall } from "../../utils/Authapicalls";
 import { useAuth } from "../../utils/Auth";
+import { toast } from "react-toastify";
 
 function Login() {
   const navigate = useNavigate();
@@ -66,6 +67,7 @@ function Login() {
     }).then((data) => {
       auth.login(data);
       data && navigate(redirectPath, { replace: true });
+      data && toast.success(`sigin in as ${data.email}`)
     });
   };
 

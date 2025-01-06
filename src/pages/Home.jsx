@@ -8,9 +8,10 @@ import { BsBag, BsLaptop, BsPhone, BsSmartwatch } from "react-icons/bs";
 import { useLocation, useNavigate } from "react-router-dom";
 import headerimg from "../../public/images/header.jpg";
 import LoadingSpinner from "../component/loader";
+import { ToastContainer } from "react-toastify";
 
 
-function Home() {
+function Home({notify}) {
   const { data, isloading } = useContext(Datacontext);
   const router = useNavigate();
   const location = useLocation();
@@ -67,6 +68,7 @@ function Home() {
 
       {/* Main Content */}
       <div className="container mx-auto flex flex-col justify-center items-center">
+        
         {/* Categories Section */}
         <div className="mb-[20px] md:mb-20">
           <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">
@@ -100,7 +102,7 @@ function Home() {
             {!isloading &&
               data.products
                 .slice(0, 8)
-                .map((product, i) => <Item product={product} key={i} />)}
+                .map((product, i) => <Item product={product} key={i} onnotify={notify} />)}
           </div>
         </div>
 

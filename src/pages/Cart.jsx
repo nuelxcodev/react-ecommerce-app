@@ -1,20 +1,46 @@
 /* eslint-disable no-unused-vars */
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Store } from "../../utils/Store";
 import { BiTrash } from "react-icons/bi";
 import Nav from "../component/Nav";
 import { useNavigate } from "react-router-dom";
 
-export default function Cart() {
+export default function Cart({ notify }) {
   const navigate = useNavigate();
   const { state, dispatch } = useContext(Store);
   const { cart } = state;
+
+  const numOfItem = cart.reduce((a, b) => a + b.quantity, 0);
+  const [newnumofitems, setnewnum] = useState(0);
+  const [itemstoast, setitemtoast] = useState({});
+  // const curritemqnt = cart.find(x=> x._id === itemstoast._id)
+  const current_cart_lenght = newnumofitems;
+
+  console.log(itemstoast.item);
+  useEffect(() => {
+    if (itemstoast.value && numOfItem > current_cart_lenght) {
+      notify.success(
+        `${itemstoast.value - itemstoast.item.quantity} more ${
+          itemstoast.item.name
+        } added to cart`
+      );
+    }
+    if (numOfItem < current_cart_lenght) {
+      notify.success(
+        `${current_cart_lenght - numOfItem} items has been removed to cart`
+      );
+    }
+    setnewnum(numOfItem);
+  }, [numOfItem]);
 
   return (
     <div className="flex justify-center items-center h-screen bg-neutral-200 font-sans text-sm  w-full">
       <Nav />
       <div className="flex justify-center md:items-center ">
-        <div style={{width:'min(900px, 100vw)'}} className="mt-16 flex flex-wrap md:overflow-hidden  border-white bg-white md:rounded-lg md:shadow-lg">
+        <div
+          style={{ width: "min(900px, 100vw)" }}
+          className="mt-16 flex flex-wrap md:overflow-hidden  border-white bg-white md:rounded-lg md:shadow-lg"
+        >
           {/* Cart Items Section */}
           <div className="w-full md:w-2/3 p-5">
             <div className="mb-5">
@@ -64,6 +90,7 @@ export default function Cart() {
                             type: "ADD_ITEM",
                             payload: { ...item, quantity: value },
                           });
+                          setitemtoast({ value, item });
                         }}
                         className="border border-gray-300 rounded-md py-1 px-2"
                       >

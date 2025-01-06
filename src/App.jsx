@@ -8,16 +8,23 @@ import Cart from "./pages/Cart";
 import Shipping from "./pages/Shipping";
 import Success from "./pages/Success";
 import ResetPassword from "./pages/Resetpassword";
+import { toast, ToastContainer } from "react-toastify";
+import { useContext, useEffect, useRef, useState } from "react";
+import { Store } from "../utils/Store";
 
 function App() {
+  const { state, dispatch } = useContext(Store);
+  const { cart } = state;
+  const notify = toast;
+
   const Router = createBrowserRouter([
     {
       path: "/",
-      element: <Home></Home>,
+      element: <Home notify={notify}></Home>,
     },
     {
       path: "/products",
-      element: <Products></Products>,
+      element: <Products notify={notify}></Products>,
     },
     {
       path: "/login",
@@ -27,35 +34,28 @@ function App() {
       path: "/shipping",
       element: (
         <RequireAuth>
-          <Shipping></Shipping>
+          <Shipping notify={notify}></Shipping>
         </RequireAuth>
       ),
     },
     {
       path: "/cart",
-      element: <Cart></Cart>,
+      element: <Cart notify={notify}></Cart>,
     },
     {
       path: "/product/:id",
-      element: <ProductScreen></ProductScreen>,
-    },
-    {
-      path: "/checkout/success",
-      element: (
-        <RequireAuth>
-          <Success />
-        </RequireAuth>
-      ),
+      element: <ProductScreen notify={notify}></ProductScreen>,
     },
     {
       path: "/reset-password",
-      element: <ResetPassword></ResetPassword>,
+      element: <ResetPassword notify={notify}></ResetPassword>,
     },
   ]);
 
   return (
-    <main className=" flex justify-center flex-col items-center  ">
-      <RouterProvider router={Router}></RouterProvider>
+    <main className="relative flex justify-center flex-col items-center  ">
+      <RouterProvider router={Router}> </RouterProvider>
+
     </main>
   );
 }

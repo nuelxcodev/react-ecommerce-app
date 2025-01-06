@@ -3,6 +3,8 @@ import { Store } from "../../utils/Store";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../utils/Auth";
 import { BiCart, BiMenu } from "react-icons/bi";
+import { ToastContainer } from "react-toastify";
+
 
 function Nav() {
   const { state } = useContext(Store);
@@ -16,6 +18,7 @@ function Nav() {
 
   return (
     <nav className="bg-white shadow fixed top-0 left-0 w-full  z-50">
+    <ToastContainer className='mt-[55px]'></ToastContainer>
       <div className="container mx-auto px-6 py-3 md:flex md:justify-between md:items-center">
         {/* Logo Section */}
         <div className="flex justify-between items-center">

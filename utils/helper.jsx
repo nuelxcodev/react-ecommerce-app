@@ -1,5 +1,5 @@
 import { s } from "framer-motion/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function posibleStrings(data) {
   return [
@@ -9,10 +9,7 @@ function posibleStrings(data) {
   ];
 }
 
-export async function checkItemesWith({
-  checkingFrom,
-  checkingFor,
-}) {
+export async function checkItemesWith({ checkingFrom, checkingFor }) {
   const element = posibleStrings(checkingFor);
   const items_found = [];
 
@@ -27,8 +24,9 @@ export async function checkItemesWith({
           item.brand.toLowerCase().includes(searchString.toLowerCase()))
     );
     if (matchFound) {
-        items_found.push(item)
+      items_found.push(item);
     }
   });
   return items_found;
 }
+

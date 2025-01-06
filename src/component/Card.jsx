@@ -1,12 +1,36 @@
 /* eslint-disable react/prop-types */
-import { useContext } from "react";
+import { useContext, useRef, useState } from "react";
 import { Store } from "../../utils/Store";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Item({ product }) {
   const { state, dispatch } = useContext(Store);
   const { cart } = state;
   const navigate = useNavigate();
+  const existingitem = cart.find((item) => item._id === product._id);
+  const quantity = existingitem ? existingitem.quantity + 1 : 1;
+
+  const toastidRef = useRef(null);
+
+  const addaction = () => {
+    if (toastidRef.current) {
+      toast.update(toastidRef.current, {
+        render: `${quantity} ${product.name} has been added to cart`,
+        type: "success",
+        autclose: 3000,
+        className: "custom-toast",
+      });
+    } else {
+      toastidRef.current = toast.success(
+        `${product.name} has been added to cart`,
+        {
+          className: "custom-toast",
+          autclose: 3000,
+        }
+      );
+    }
+  };
 
   return (
     <div className="relative hover:bg-neutral-300 h-60 md:max-w-[280px] w-[100%] max-w-[180px] m-auto md:w-[100%] md:text-sm overflow-hidden rounded-lg bg-neutral-100 shadow-lg hover:shadow-2xl transition-shadow duration-300  border border-white">
@@ -30,7 +54,9 @@ function Item({ product }) {
       {/* Product Details */}
       <section className="py-2 relative ">
         {/* Product Info */}
-        <h1 className="text-sm font-bold text-black mb-1 pl-4">{product.name}</h1>
+        <h1 className="text-sm font-bold text-black mb-1 pl-4">
+          {product.name}
+        </h1>
         <hr className="w-8 h-[3px] bg-red-600 my-1 ml-2" />
 
         <div className=" flex w-full justify-around">
@@ -60,14 +86,11 @@ function Item({ product }) {
           {/* Buy Now Button */}
           <button
             onClick={() => {
-              const existingitem = cart.find(
-                (item) => item.slug === product.slug
-              );
-              const quantity = existingitem ? existingitem.quantity + 1 : 1;
               dispatch({
                 type: "ADD_ITEM",
                 payload: { ...product, quantity },
               });
+              addaction();
             }}
             className="text-center text-white 
             bg-pink-700 py-2 px-2 rounded-lg text-xs font-bold
