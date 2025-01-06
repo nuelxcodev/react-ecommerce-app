@@ -83,6 +83,7 @@ body {
 }
 .custom-toast {
   box-shadow: 0 0 10px 0.1px rgba(40, 40, 40, 0.466) !important;
+  z-index: 40;
 }
 
 /* Button hover effect is handled inline */
