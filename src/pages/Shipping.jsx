@@ -43,9 +43,7 @@ function Shipping() {
     setFailure(false);
   };
 
-  useEffect(() => {
-    dispatch({ type: "RESET_CART" });
-  }, [success]);
+  success && dispatch({ type: "RESET_CART" });
 
   return (
     <div>
